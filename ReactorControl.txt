@@ -1,0 +1,24 @@
+local term = require("term")
+local reactor = require("component").br_reactor
+local bContinue = true
+
+while bContinue do
+  term.clear()
+  if reactor == nil then
+    bContinue = false
+  else
+    if reactor.getActive() then
+      local energyStats = reactor.getEnergyStats()
+      local ctrlLevel = math.min((energyStats.energyStored/(energyStats.energyCapacity * 0.90)), 1)
+      ctrlLevel = ctrlLevel * ctrlLevel
+      reactor.setAllControlRodLevels(math.min(ctrlLevel * 100, 100))
+      print("Generating " .. energyStats.energyProducedLastTick .. " RF/t")
+      print("RF Stored: " .. energyStats.energyStored)
+      print("Control rod level: " .. ctrlLevel)
+    else
+      print("Starting reactor...")
+      reactor.setActive(true)
+    end
+  end
+  os.sleep(0.5)
+end
