@@ -17,8 +17,14 @@ function main()
   function receive(...)
     print("MESSAGE RECEIVED!")
     local packedMsg = {...} --table.pack(...)
-    for k, v in pairs(packedMsg) do
-      print(k, v)
+    local request = serialization.unserialize(packedMsg[6])
+    if (request == nil) then
+      return
+    elseif (request["processor"] == nil) or ( request["recipe"] == nil) then
+      print("Request error: processor: " .. request["processor"] .. ", recipe: " .. request["recipe"])
+      return
+    else
+      print("Request valid")
     end
   end
 
