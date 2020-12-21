@@ -19,9 +19,17 @@ function main()
     local packedMsg = {...} --table.pack(...)
     local request = serialization.unserialize(packedMsg[6])
     if (request == nil) then
+      print("nil request")
       return
     elseif (request["processor"] == nil) or ( request["recipe"] == nil) then
-      print("Request error: processor: " .. request["processor"] .. ", recipe: " .. request["recipe"])
+      --print("Request error: processor: " .. tostring(request["processor"]) .. ", recipe: " .. tostring(request["recipe"]))
+      print(Error)
+      if (request["processor"] == nil) then
+        print("Processor not specified")
+      end
+      if (request["recipe"] == nil) then
+        print("Recipe not specified")
+      end
       return
     else
       print("Request valid")
